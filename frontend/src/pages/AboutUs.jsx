@@ -4,11 +4,11 @@ import logo from "../assets/images/Edreq_logo.png";
 const AboutUs = () => {
   return (
     <>
-      <div className="mt-5 p-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="mt-5 p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         <img src={logo} alt="logo" />
-        <div className="col-span-2 space-y-4">
-          <p className="h3">Welcome to Edreq!</p>
-          <p>
+        <div className="col-span-2 space-y-5 md:space-y-10">
+          <p className="h3 text-n-15">Welcome to Edreq!</p>
+          <p className="text-lg">
             At Edreq, we stand for the idea that every student has some hidden
             talents and we aim to help expose them. It is our goal to
             revolutionize the current and conventional schooling system,
@@ -21,17 +21,16 @@ const AboutUs = () => {
           </p>
         </div>
       </div>
-      <div className="mt-7 container space-y-4">
-        <p className="font-semibold h4 text-center">Our commitment</p>
-        <p>
-          {" "}
+      <div className="mt-7 p-5 md:p-[5rem] space-y-4 bg-blue-100">
+        <p className="font-semibold h3 text-center">Our commitment</p>
+        <p className="text-lg">
           At Edreq, we believe that every child has a potential that needs to be
           discovered and nurtured. That is why we strive to develop a learning
           environment that is catered to the individual learner abilities,
           preferences, and learning needs. Using special tests and effective
           analysis, we determine the child's potential and his/her weaknesses,
           and design a developmental program to help the student develop his/her
-          talents and become interested in studying.{" "}
+          talents and become interested in studying.
         </p>
         <p>
           Our platform provides individualized learning experiences and
@@ -47,7 +46,7 @@ const AboutUs = () => {
         </p>
       </div>
       <div className="flex flex-col md:flex-row gap-5 my-10 container">
-        <div className="border p-5 space-y-3 border-b-4 border-b-green-400 hover:bg-green-400 transition-all duration-500 ease-in-out hover:translate-y-[-10px]">
+        <div className="border p-5 space-y-3 border-b-4 border-b-green-400 bg-green-50 hover:bg-green-400 transition-all duration-500 ease-in-out hover:translate-y-[-10px]">
           <p className="text-center h5 font-semibold">Vision</p>
           <p>
             To transform the system of education so that each learner gets an
@@ -60,7 +59,7 @@ const AboutUs = () => {
             face the future.
           </p>
         </div>
-        <div className="border p-5 space-y-3 border-b-4 border-b-blue-400 hover:bg-blue-400 transition-all duration-500 ease-in-out hover:translate-y-[-10px]">
+        <div className="border p-5 space-y-3 border-b-4 border-b-purple-400 bg-purple-50 hover:bg-purple-400 transition-all duration-500 ease-in-out hover:translate-y-[-10px]">
           <p className="text-center h5 font-semibold">Mission</p>
           <p>
             We believe that every student in the 6th to the 10th grade deserves
@@ -72,7 +71,7 @@ const AboutUs = () => {
           </p>
         </div>
       </div>
-      <div className="my-10 container text-center space-y-4">
+      <div className="my-10 cp-5 md:p-[5rem] bg-n-2 text-center space-y-4 md:space-y-8">
         <p className="font-semibold h5">
           Welcome to join us for the journey to strive for excellence.!
         </p>
@@ -83,17 +82,15 @@ const AboutUs = () => {
           support, students will get not only what they need for successful
           studying but also the skills which will help them in further life.
         </p>
-      </div>
-      <div className="my-10 container space-y-6">
         <p>
-          <span className="font-semibold text-lg">Get Started Today! </span>
+          <span className="font-semibold text-lg text-n-15">Get Started Today! </span>
           Discover more about us such as where to get more details, our
           educators, as well as a brief on how we offer education differently.
           Allowing in equal measure every student to be what they can be as they
           prepare for the future.
         </p>
       <p>
-        <span className="font-semibold text-lg">Edreq:</span>Where
+        <b className="text-xl text-n-15">Edreq </b>Where
         learning is individualized, guidance is significant, and each learners’
         progression is different.
       </p>
