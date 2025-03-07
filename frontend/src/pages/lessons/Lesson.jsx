@@ -38,7 +38,7 @@ const Lesson = () => {
         <div
           className={`${
             courseContentOpen ? "block" : "hidden"
-          } lg:border lg:w-1/3 overflow-y-scroll fixed inset-0 lg:static lg:block lg:mx-auto z-50 bg-n-2`}
+          } lg:border lg:w-1/3 overflow-y-scroll fixed inset-0 lg:static lg:block lg:mx-auto z-40 lg:z-0d bg-n-2`}
         >
           <div className="p-4 flex justify-between items-center">
             <p className="font-semibold">Content</p>

@@ -16,6 +16,11 @@
   scroll-behavior: smooth;
 }
 
+input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
 
 .slick-prev:before,
 .slick-next:before {

@@ -1,6 +1,7 @@
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
+import { sendVerificationMail } from "../mail/emails.js";
 
 export const register=async(req,res)=>{
     try{
@@ -20,9 +21,12 @@ export const register=async(req,res)=>{
             })
         }
         const hashPassword= await bcrypt.hash(password, 10);
+        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        
         const newUser=await User.create({
-            fullName,email,phoneNumber,password:hashPassword,classNo
+            fullName,email,phoneNumber,password:hashPassword,classNo,verificationToken,verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
         });
+
         const tokenData = { userId: newUser._id };
         const token = jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: "7d" });
 
@@ -32,6 +36,8 @@ export const register=async(req,res)=>{
             email: newUser.email,
             phoneNumber: newUser.phoneNumber
         };
+
+        await sendVerificationMail(user.email,verificationToken)
 
         return res.status(200).cookie("token",token,
             {
@@ -53,6 +59,40 @@ export const register=async(req,res)=>{
         });
     }
 }
+
+export const verifyEmail = async (req, res) => {
+	const { code } = req.body;
+	try {
+		const user = await User.findOne({
+			verificationToken: code,
+			verificationTokenExpiresAt: { $gt: Date.now() },
+		});
+
+		if (!user) {
+			return res.status(400).json({ success: false, message: "Invalid or expired verification code" });
+		}
+
+		user.isVerified = true;
+		user.verificationToken = undefined;
+		user.verificationTokenExpiresAt = undefined;
+		await user.save();
+
+		// await sendWelcomeEmail(user.email, user.name);
+
+		res.status(200).json({
+			success: true,
+			message: "Email verified successfully",
+			user: {
+				...user._doc,
+				password: undefined,
+			},
+		});
+	} catch (error) {
+		console.log("error in verifyEmail ", error);
+		res.status(500).json({ success: false, message: "Server error" });
+	}
+};
+
 
 export const login=async (req,res)=>{
     try {

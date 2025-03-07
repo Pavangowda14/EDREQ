@@ -1,13 +1,11 @@
 import React from "react";
-import logo from "../assets/images/Edreq_logo.png";
 
 const AboutUs = () => {
   return (
     <>
-      <div className="mt-5 p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <img src={logo} alt="logo" />
-        <div className="col-span-2 space-y-5 md:space-y-10">
-          <p className="h3 text-n-15">Welcome to Edreq!</p>
+      <div className="mt-5 p-5 md:p-10 gap-6">
+        <div className="space-y-5 md:space-y-10">
+          <p className="h3 text-n-15 text-center">Welcome to Edreq!</p>
           <p className="text-lg">
             At Edreq, we stand for the idea that every student has some hidden
             talents and we aim to help expose them. It is our goal to
@@ -71,7 +69,7 @@ const AboutUs = () => {
           </p>
         </div>
       </div>
-      <div className="my-10 cp-5 md:p-[5rem] bg-n-2 text-center space-y-4 md:space-y-8">
+      <div className="my-10 p-5 md:p-[5rem] bg-n-2 text-center space-y-4 md:space-y-8">
         <p className="font-semibold h5">
           Welcome to join us for the journey to strive for excellence.!
         </p>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { FaRegCircle } from "react-icons/fa";
 import axios from "axios";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../../context/UserContext";
 
 const Lessons = () => {
   const { id } = useParams();

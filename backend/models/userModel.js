@@ -25,6 +25,14 @@ const userSchema=new mongoose.Schema({
         enum: ['student', 'teacher', 'admin'],
         default: 'student',
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
     coursesEnrolled:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Course",

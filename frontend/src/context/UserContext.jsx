@@ -16,15 +16,16 @@ export const UserProvider = ({ children }) => {
           withCredentials: true,
         });
         if (response.data.success) {
-          const storedUser = localStorage.getItem("user");
+          const storedUser = JSON.parse(localStorage.getItem("user"));
           if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            setUser(storedUser);
             setIsAuth(true);
           }
         } else {
           handleInvalidSession();
         }
       } catch (error) {
+        console.log(error)
         handleInvalidSession();
       }
     };
@@ -37,22 +38,26 @@ export const UserProvider = ({ children }) => {
     };
 
     verifyToken();
-  }, []);
+  }, [isAuth]);
 
   const loginUser = (userData) => {
     setUser(userData);
     setIsAuth(true);
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("isAuth", "true");
+    localStorage.setItem("isAuth", JSON.stringify(true));
   };
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
     setUser(null);
     setIsAuth(false);
     localStorage.removeItem("user");
     localStorage.removeItem("isAuth");
   };
-
   return (
     <UserContext.Provider value={{ user, isAuth, loginUser, logoutUser }}>
       {children}

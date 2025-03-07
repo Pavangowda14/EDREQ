@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useUser } from "../context/UserContext";
-import CourseCard from "../components/CourseCard";
+import { useUser } from "../../context/UserContext";
+import CourseCard from "../../components/CourseCard";
 import { useNavigate } from "react-router-dom";
 
 const MyCourses = () => {
@@ -20,9 +20,9 @@ const MyCourses = () => {
       const response = await axios.get("http://localhost:5000/api/mycourses", {
         withCredentials: true,
       });
+      
       if (response.data.success) {
         setCourses(response.data.courses);
-        console.log(response.data);
       }
     } catch (error) {
       console.log(error);
