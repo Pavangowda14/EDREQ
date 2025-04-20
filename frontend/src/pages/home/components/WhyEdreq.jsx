@@ -27,9 +27,9 @@ const whyEdreqData = [
 ];
 
 const WhyEdreq = () => {
-  const navigate = useNavigate();
+  
   return (
-    <div className="py-10 flex flex-col space-y-10 lg:space-y-15 items-center bg-yellow-400 min-h-[100vh] justify-center">
+    <div className="py-10 flex flex-col space-y-10 lg:space-y-15 items-center bg-n-2 min-h-[100vh] justify-center">
       <h1 className="text-4xl text-n-15 font-bold">WHY EDREQ</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {whyEdreqData.map((item, index) => (
@@ -47,12 +47,6 @@ const WhyEdreq = () => {
           </div>
         ))}
       </div>
-      <Button
-        className="bg-n-15 text-white max-w-xs"
-        onClick={() => navigate("/courses")}
-      >
-        Exploire Courses
-      </Button>
     </div>
   );
 };

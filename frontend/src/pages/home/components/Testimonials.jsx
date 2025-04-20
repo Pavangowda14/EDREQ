@@ -5,27 +5,34 @@ import Slider from "react-slick";
 const testimonials = [
   {
     review:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, nihil. Laborum minus tempora nisi, rem perferendis consequuntur est voluptatem eos maiores dolor itaque facilis fugit officiis tempore? Aliquam, repudiandae voluptates?",
-    name: "Name1",
+      "Edreq has made a huge difference in my child's learning. The tutors explain concepts in a simple way, making it easy to understand. My son now enjoys studying and performs much better in school!",
+    name: "Anjali M., Parent",
     star: 5,
   },
   {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, nihil. Laborum minus tempora nisi, rem perferendis consequuntur est voluptatem eos maiores dolor itaque facilis fugit officiis tempore? Aliquam, repudiandae voluptates?",
-    name: "Name2",
+    review:"I was struggling with math, but Edreq’s personalized tutoring helped me a lot. The one-on-one sessions cleared all my doubts, and now I feel more confident in solving problems on my own.",
+     name: "Rahul S., Class 9 Student",
     star: 4,
   },
   {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, nihil. Laborum minus tempora nisi, rem perferendis consequuntur est voluptatem eos maiores dolor itaque facilis fugit officiis tempore? Aliquam, repudiandae voluptates?",
-    name: "Name3",
-    star: 3,
+    review:"Edreq provides structured and well-organized study materials that cover everything in the CBSE syllabus. The doubt-clearing sessions have been very helpful for my daughter’s exam preparation.",
+     name: "Ravi K., Parent",
+    star: 5,
   },
   {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, nihil. Laborum minus tempora nisi, rem perferendis consequuntur est voluptatem eos maiores dolor itaque facilis fugit officiis tempore? Aliquam, repudiandae voluptates?",
-    name: "Name4",
+    review:"Thanks to Edreq, I improved my grades in science and social studies. The teachers are patient and supportive, making learning a stress-free experience. I highly recommend it to all students!",
+    name: "Priya D., Class 8 Student",
     star: 4,
+  },
+  {
+    review:"The best part about Edreq is the personalized mentorship. My son receives individual attention, and the teachers track his progress regularly. It’s a great platform for academic improvement.",
+    name: "Meera J., Parent",
+    star: 5,
+  },
+  {
+    review:"Edreq has been a game changer for me. The well-structured lessons and expert guidance helped me understand difficult subjects easily. I feel fully prepared for my board exams now!",
+     name: "Amit T., Class 10 Student",
+    star: 5,
   },
 ];
 

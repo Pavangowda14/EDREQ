@@ -25,6 +25,7 @@ const courseSchema=mongoose.Schema({
         ref:"Category",
         required:true
     },
+    sectionContent: [{ type: mongoose.Schema.Types.ObjectId, ref: "Section" }],
     createdBy:{
         type:String
     },

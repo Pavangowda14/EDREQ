@@ -10,6 +10,8 @@ import lessonRouter from "./routes/lessonRoutes.js"
 import studyMaterialCategoryRouter from "./routes/studyMaterialCategoryRoutes.js";
 import subjectRouter from "./routes/subjectRoutes.js";
 import studyMaterialRouter from "./routes/studyMaterialRoutes.js"
+import demoRequest from "./routes/demoRequestRoutes.js"
+import careerRoutes from "./routes/careerRoutes.js"
 
 dotenv.config({})
 
@@ -38,6 +40,8 @@ app.use("/api",lessonRouter)
 app.use("/api",studyMaterialCategoryRouter)
 app.use("/api",subjectRouter)
 app.use("/api",studyMaterialRouter)
+app.use("/api",demoRequest)
+app.use("/api",careerRoutes)
 
 app.listen(PORT,()=>{
     connectDB();

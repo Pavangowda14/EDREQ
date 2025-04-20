@@ -38,7 +38,23 @@ const userSchema=new mongoose.Schema({
         ref:"Course",
         required: false,
     }],
-
+    gender: {
+        type: String,
+        enum: ["male", "female", "other"],
+        required: false,
+      },
+      address: {
+        type: String,
+        required: false,
+      },
+      phoneNumber: {
+        type: String,
+        required: false,
+      },
+      profilePicture: {
+        type: String,
+        required: false,
+      },
 },{timestamps:true});
 
 export const User= mongoose.model("User",userSchema);

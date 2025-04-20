@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "../../components/CourseCard";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import { useFetchCourses } from "./api/getCourse";
 
 const Courses = () => {
@@ -27,7 +26,6 @@ const Courses = () => {
     isSuccess,
   } = useFetchCourses({});
 
-console.log(isLoading,coursesData,isSuccess)
   useEffect(() => {
     if (isSuccess) {
       if (selectedClass === "All") {
@@ -39,7 +37,7 @@ console.log(isLoading,coursesData,isSuccess)
         setFilteredCourses(filtered);
       }
     }
-  }, [selectedClass, coursesData,isSuccess]);
+  }, [selectedClass, coursesData, isSuccess]);
 
   const handleClassChange = (category) => {
     setSelectedClass(category);

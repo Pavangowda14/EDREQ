@@ -1,10 +1,11 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const BookSessionForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phno: "",
+    phone: "",
     classNo: "",
     message: "",
   });
@@ -17,28 +18,37 @@ const BookSessionForm = () => {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation: Check if all required fields are filled
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.phno ||
-      !formData.classNo
-    ) {
-      setError("Please fill in all required fields.");
-      return;
+    try {
+      if (
+        !formData.name ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.classNo
+      ) {
+        setError("Please fill in all required fields.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:5000/api/demo-request/submit",
+        formData
+      );
+      setSuccess(response.data.message);
+      setError("")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        classNo: "",
+        message: "",
+      });
+    } catch (error) {
+      
+      setError(error.response?.data?.message || "Something went wrong!");
     }
-
-    setSuccess("Session booked successfully! 🎉");
-    setFormData({
-      name: "",
-      email: "",
-      phno: "",
-      classNo: "",
-      message: "",
-    });
   };
 
   return (
@@ -70,8 +80,8 @@ const BookSessionForm = () => {
 
           <input
             type="number"
-            name="phno"
-            value={formData.phno}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             className="w-full border-2 border-gray-300 p-3 rounded-lg focus:border-none focus:ring-2 focus:ring-blue-500"
             placeholder="Your mobile number"
@@ -85,7 +95,9 @@ const BookSessionForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="" disabled>Select Class</option>
+            <option value="" disabled>
+              Select Class
+            </option>
             <option value="6">Class 6</option>
             <option value="7">Class 7</option>
             <option value="8">Class 8</option>

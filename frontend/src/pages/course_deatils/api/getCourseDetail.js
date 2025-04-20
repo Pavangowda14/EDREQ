@@ -1,16 +1,15 @@
-import axios from "axios";
 import { generateErrorMessage } from "../../../shared/helpers/errorHelper";
 import { useToast } from "../../../shared/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { client } from "../../../shared/client/client";
 
-export const fetchCourseDetails = async ({courseId}) => {
-    console.log(courseId)
-  const { data } = await axios.get(`http://localhost:5000/api/course/${courseId}`);
+export const fetchCourseDetails = async (courseId) => {
+  const { data } = await client.get(`/api/course/${courseId}`);
   return data;
 };
 
-export const useFetchCourseDetails = (courseId) => {
+export const useFetchCourseDetails = ({courseId}) => {
   const { addToast } = useToast();
   const response = useQuery({
     queryKey: ["fetchCourseDetails"],

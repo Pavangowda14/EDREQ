@@ -1,32 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
+import { useFetchSectionData } from "./api/getSingleSection";
+import { useFetchVideoData } from "./api/getVideoData";
+import Loader from "../../shared/components/Loader";
 
 const Lesson = () => {
-  const { courseId, lessonId } = useParams();
-  const [lessons, setLessons] = useState([]);
+  const { sectionId, videoId } = useParams();
+  const navigate = useNavigate();
   const [courseContentOpen, setCourseContentOpen] = useState(false);
-  const [singleLesson, setSingleLesson] = useState(null);
+  const [openAccordions, setOpenAccordions] = useState({
+    videos: true,
+    studyMaterials: false,
+  });
 
-  const fetchMyCourses = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/lessons/${courseId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.data.success) {
-        setLessons(response.data.lessons);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const {
+    data: section,
+    refetch: refetchSection,
+    isFetching: isFetchingSection,
+    isLoading: isLoadingSection,
+  } = useFetchSectionData({ sectionId: sectionId });
+
+  const {
+    data: VideoData,
+    refetch: refetchVideo,
+    isFetching: isFetchingVideo,
+    isLoading: isLoadingVideo,
+  } = useFetchVideoData({ videoId: videoId });
+
   useEffect(() => {
-    fetchMyCourses();
-  }, [courseId]);
+    refetchSection();
+  }, [sectionId]);
+
+  useEffect(() => {
+    refetchVideo();
+  }, [sectionId, videoId]);
+
+  const toggleAccordion = (key) => {
+    setOpenAccordions((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  };
 
   const handleCourseContentToggle = () => {
     setCourseContentOpen(!courseContentOpen);
@@ -38,34 +54,95 @@ const Lesson = () => {
         <div
           className={`${
             courseContentOpen ? "block" : "hidden"
-          } lg:border lg:w-1/3 overflow-y-scroll fixed inset-0 lg:static lg:block lg:mx-auto z-40 lg:z-0d bg-n-2`}
+          } lg:border lg:w-1/3 overflow-y-scroll fixed top-[100px] left-0 right-0 bottom-0 lg:static lg:block lg:mx-auto z-40 lg:z-0d bg-n-2`}
         >
           <div className="p-4 flex justify-between items-center">
             <p className="font-semibold">Content</p>
-            <button className="lg:hidden text-xl" onClick={handleCourseContentToggle}> <AiOutlineClose /></button>
+            <button
+              className="lg:hidden text-xl"
+              onClick={handleCourseContentToggle}
+            >
+              {" "}
+              <AiOutlineClose />
+            </button>
           </div>
           <div className="">
-            <p className="p-4 font-semibold">Learning videos</p>
-            <div className="">
-              {lessons &&
-                lessons.length > 0 &&
-                lessons.map((lesson, index) => (
-                  <div key={index} className="p-4 border">
-                    {lesson.title}
-                  </div>
-                ))}
-            </div>
+            {section ? (
+              <div key={section._id}>
+                <div className="border-b">
+                  <button
+                    className="w-full flex justify-between items-center p-3 text-lg font-semibold focus:outline-none"
+                    onClick={() => toggleAccordion("videos")}
+                  >
+                    Learning Videos
+                    <span>{openAccordions.videos ? "▲" : "▼"}</span>
+                  </button>
+                  {openAccordions?.videos && (
+                    <div className="p-2">
+                      {section.section?.videos?.length > 0 ? (
+                        section.section.videos.map((video) => (
+                          <div
+                            key={video._id}
+                            className="p-2 text-blue-600 cursor-pointer hover:underline"
+                            onClick={() =>
+                              navigate(
+                                `/course/${video.Section}/lesson/${video._id}`
+                              )
+                            }
+                          >
+                            {video.title}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-gray-500">No videos available</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Study Materials Accordion */}
+                <div className="border-b mt-3">
+                  <button
+                    className="w-full flex justify-between items-center p-3 text-lg font-semibold focus:outline-none"
+                    onClick={() => toggleAccordion("studyMaterials")}
+                  >
+                    Study Materials
+                    <span>{openAccordions.studyMaterials ? "▲" : "▼"}</span>
+                  </button>
+                  {openAccordions.studyMaterials && (
+                    <div className="p-2">
+                      {section.section.studyMaterials.length > 0 ? (
+                        section.section.studyMaterials.map((material) => (
+                          <div key={material._id} className="p-2">
+                            📘 {material.name}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-gray-500">
+                          No study materials available
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <p>No sections available.</p>
+            )}
           </div>
         </div>
         <div className="border p-3 lg:px-5 lg:py-2 w-full space-y-2">
-          <button className=" lg:hidden flex items-center space-x-1 text-n-15" onClick={handleCourseContentToggle}>
-          <AiOutlineMenu className="text-xl"/>
-           <p> Course content</p>
+          <button
+            className=" lg:hidden flex items-center space-x-1 text-n-15"
+            onClick={handleCourseContentToggle}
+          >
+            <AiOutlineMenu className="text-xl" />
+            <p> Course content</p>
           </button>
-          <p className="font-semibold lg:text-lg">Biology</p>
+          <p className="font-semibold lg:text-lg">{VideoData?.video?.title}</p>
           <iframe
             className="w-full h-[230px] md:h-[330px] lg:h-[430px]"
-            src="https://www.youtube.com/embed/7hzbLqx_s2k?si=kHIya3I750UD6OVg"
+            src={VideoData?.video.videoLink}
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -74,6 +151,9 @@ const Lesson = () => {
           ></iframe>
         </div>
       </div>
+       {(isFetchingSection || isLoadingSection || isFetchingVideo || isLoadingVideo) && (
+              <Loader message="Loading..." />
+            )}
     </>
   );
 };

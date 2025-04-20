@@ -1,17 +1,21 @@
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "./Button";
-import { useUser } from "../context/UserContext";
-import logo from "../assets/images/Edreq_logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Button from "../../../components/Button";
+import { useUser } from "../../../context/UserContext";
+import logo from "../../../assets/images/Edreq_logo.png";
 import axios from "axios";
 import { FaPhoneAlt } from "react-icons/fa";
+import { useFetchCourses } from "../../../pages/courses/api/getCourse";
 
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { user, isAuth, logoutUser } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -37,9 +41,20 @@ const Header = () => {
       console.log("Logout error:", error);
     }
   };
+  const {
+    data: coursesData,
+    isFetching,
+    isLoading,
+    isSuccess,
+  } = useFetchCourses({});
+  const uniqueClasses = [...new Set(coursesData?.courses)];
+  const handleNavigate = (courseId) => {
+    navigate(`/course/${courseId}`);
+    setIsOpen(false);
+  };
   return (
     <div
-      className={`fixed top-0 left-0 w-full z-50 border-b-4 border-n-2 bg-n-8 max-h-[5.5rem]`}
+      className={`relative top-0 left-0 w-full z-50 border-b-4 border-n-2 bg-n-8 max-h-[5.5rem]`}
     >
       <div className="flex items-center lg:justify-between px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
         <button
@@ -68,19 +83,38 @@ const Header = () => {
         >
           <div className="relative z-2 flex flex-col md:items-center text-xl border-t-2 lg:text-sm lg:m-auto lg:flex-row w-full">
             <Link
-              className="block relative font-code transition-colors px-5 py-6 md:py-5 uppercase lg:text-lg lg:font-semibold lg:leading-5 text-n-1 hover:text-n-1/50"
               to="/"
+              className={`px-5 py-3 uppercase lg:text-lg lg:font-semibold transition-colors ${
+                isActive("/") ? "text-n-1" : "text-n-1/50 hover:text-n-1"
+              }`}
             >
               Home
             </Link>
+            <div className="relative group">
+              <button
+                className="relative font-code transition-colors px-5 py-6 md:py-5 uppercase lg:text-lg lg:font-semibold lg:leading-5 text-n-1/50 hover:text-n-1"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                Courses ▾
+              </button>
+              <ul className="absolute left--6 w-48 bg-n-2 shadow-md rounded-md hidden group-hover:block">
+                {uniqueClasses?.map((eachClass, index) => (
+                  <li
+                    key={index}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleNavigate(eachClass._id)}
+                  >
+                    {eachClass.category?.categoryName}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <Link
-              className="block relative font-code transition-colors px-5 py-6 md:py-5 uppercase lg:text-lg lg:font-semibold lg:leading-5 text-n-1 hover:text-n-1/50"
-              to="/courses"
-            >
-              Courses
-            </Link>
-            <Link
-              className="block relative font-code transition-colors px-5 py-6 md:py-5 uppercase lg:text-lg lg:font-semibold lg:leading-5 text-n-1 hover:text-n-1/50 "
+              className={`px-5 py-3 uppercase lg:text-lg lg:font-semibold transition-colors ${
+                isActive("/study-materials")
+                  ? "text-n-1 "
+                  : "text-n-1/50 hover:text-n-1"
+              }`}
               to="/study-materials"
             >
               Study Material
@@ -96,9 +130,8 @@ const Header = () => {
             </div>
             <div
               className={`block relative px-5 ${
-                isAuth ? "-order-1 bg-n-2" : ""
+                isAuth ? "-order-1 bg-n-2 group" : ""
               } lg:order-last lg:bg-transparent lg:border-none p-5 border-b-2  `}
-              onClick={toggleDropdown}
             >
               {isAuth ? (
                 <div className="relative">
@@ -118,38 +151,35 @@ const Header = () => {
                       />
                     </svg>
                   </div>
-
-                  {isDropdownOpen && (
-                    <div className="lg:absolute lg:right-0 mt-2 lg:w-48 bg-white border rounded-md shadow-lg">
-                      <Link
-                        to="/my-courses"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        My Courses
-                      </Link>
-                      <Link
-                        to="/my-profile"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        My Profile
-                      </Link>
-                      <Link
-                        to="/settings"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        Settings
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
+                  <div className="lg:absolute lg:right-0 mt-3 lg:w-48 bg-n-2 border rounded-md shadow-lg hidden group-hover:block">
+                    <Link
+                      to="/my-courses"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      My Courses
+                    </Link>
+                    <Link
+                      to="/my-profile"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      Settings
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <Button

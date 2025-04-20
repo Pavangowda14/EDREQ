@@ -41,7 +41,7 @@ export const createCourse=async(req,res)=>{
 
 export const getAllCourses=async(req,res)=>{
     try {
-        const courses=await Course.find().populate("category");
+        const courses=await Course.find().select("_id category").populate("category","categoryName").sort({ "category.categoryName": 1 });
         return res.status(200).json({
             courses,
             success:true

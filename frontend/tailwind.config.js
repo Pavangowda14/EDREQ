@@ -42,9 +42,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sora)", ...fontFamily.sans],
-        code: "var(--font-code)",
-        grotesk: "var(--font-grotesk)",
+        sans: ["Inter", ...fontFamily.sans], // Clean and modern sans-serif
+        code: ["Fira Code", "monospace"], // Good for coding elements
+        grotesk: ["Space Grotesk", "sans-serif"], // Elegant sans-serif
       },
       letterSpacing: {
         tagline: ".15em",

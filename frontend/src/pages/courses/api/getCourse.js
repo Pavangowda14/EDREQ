@@ -3,9 +3,10 @@ import { generateErrorMessage } from "../../../shared/helpers/errorHelper";
 import { useToast } from "../../../shared/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { client } from "../../../shared/client/client";
 
 export const fetchCourses = async () => {
-  const { data } = await axios.get("http://localhost:5000/api/courses");
+  const { data } = await client.get("/api/courses");
   return data;
 };
 

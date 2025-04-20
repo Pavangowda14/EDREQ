@@ -1,11 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/Button";
+import { useFetchUserProfile } from "./api/getUserProfile";
+import { useUpdateUserProfile } from "./api/updateUserProfile";
+import Loader from "../../shared/components/Loader";
 
 const MyProfile = () => {
+  const [userProfile, setUserProfile] = useState({
+    fullName: "",
+    email: "",
+    classNo: "",
+    gender: "",
+    phoneNumber: "",
+    address: "",
+  });
+  const {
+    data: profileData,
+    isLoading: isProfileDataLoading,
+    isSuccess: isProfileDataSuccess,
+  } = useFetchUserProfile();
+
+  const { mutate: updateProfile, isPending: isUpdatePending } =
+    useUpdateUserProfile();
+  const handleChange = (e) => {
+    setUserProfile({ ...userProfile, [e.target.name]: e.target.value });
+  };
+  useEffect(() => {
+    if (isProfileDataSuccess)
+      setUserProfile((prev) => ({ ...prev, ...profileData?.user }));
+  }, [isProfileDataSuccess]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    updateProfile(userProfile);
+  };
   return (
     <>
-      <div className="my-5 mx-auto md:w-[80%] grid grid:cols-1 lg:grid-cols-3 lg:gap-10 bg-n-2 lg:p-7">
-        <div className="flex justify-center items-center flex-col gap-6  p-5  ">
+      <div className="my-5 mx-auto md:w-[80%] grid grid-cols-1 lg:grid-cols-3 lg:gap-10 bg-n-2 lg:p-7">
+        <div className="flex justify-center items-center flex-col gap-6 p-5">
           <div className="border-2 border-n-15 rounded-full w-[6rem] h-[6rem] flex items-center justify-center overflow-hidden bg-gray-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -21,51 +52,90 @@ const MyProfile = () => {
             </svg>
           </div>
           <div className="text-center">
-            <p className="h4">Pavan</p>
-            <p className="font-semibold">pavan@gmail.com</p>
+            <p className="h4">{userProfile.fullName}</p>
+            <p className="font-semibold">{userProfile.email}</p>
           </div>
           <p>
-            <span className="text-neutral-500">class </span>
-            <span className="font-semibold">10</span>
+            <span className="text-neutral-500">Class </span>
+            <span className="font-semibold">{userProfile.classNo}</span>
           </p>
           <p>
             <span className="text-neutral-500">Board </span>
             <span className="font-semibold">CBSE</span>
           </p>
-          <Button className="bg-n-8 text-n-15b rounded-3xl">Change</Button>
         </div>
+
+        {/* Form Section */}
         <div className="lg:col-span-2 flex p-5 flex-col">
           <div className="flex flex-col justify-center items-center">
-            {" "}
             <p className="h4">Public Profile</p>
             <p>Add Information about Yourself</p>
           </div>
-          <form className="mt-7 flex flex-col gap-5">
+          <form className="mt-7 flex flex-col gap-5" onSubmit={handleSubmit}>
             <div className="flex flex-col md:flex-row md:items-center gap-3">
               <label className="text-gray-400 md:w-[25%]">
                 Enter your name
-              </label>{" "}
-              <input className="flex-grow p-3 border rounded-lg" type="text" />
+              </label>
+              <input
+                className="flex-grow p-3 border rounded-lg"
+                type="text"
+                name="fullName"
+                value={userProfile.fullName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
+              <label className="text-gray-400 md:w-[25%]">Email</label>
+              <input
+                className="flex-grow p-3 border rounded-lg bg-gray-200 cursor-not-allowed"
+                type="email"
+                name="email"
+                value={userProfile.email}
+                disabled
+              />
+            </div>
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
+              <label className="text-gray-400 md:w-[25%]">Phone Number</label>
+              <input
+                className="flex-grow p-3 border rounded-lg"
+                type="text"
+                name="phoneNumber"
+                value={userProfile.phoneNumber}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-3">
               <label className="text-gray-400 md:w-[25%]">Gender</label>
-              <select className="flex-grow p-3 bg-white outline-none">
-                <option>Male</option>
-                <option>Female</option>
-                <option>others</option>
+              <select
+                className="flex-grow p-3 bg-white outline-none"
+                name="gender"
+                value={userProfile.gender}
+                onChange={handleChange}
+              >
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-3">
               <label className="text-gray-400 md:w-[25%]">Address</label>
-              <textarea className="flex-grow" rows="4"></textarea>
+              <textarea
+                className="flex-grow p-3 border rounded-lg resize-none"
+                name="address"
+                rows="4"
+                value={userProfile.address}
+                onChange={handleChange}
+              />
             </div>
-            <div className="flex justify-between lg:justify-center lg:gap-6 mt-8">
-              <Button className="px-8">Cancel</Button>
-              <Button className="bg-n-15 text-n-8 px-8">Submit</Button>
-            </div>
+              <Button type="submit" className="bg-n-15 text-n-8 px-10 ml-auto">
+                Save
+              </Button>
           </form>
         </div>
       </div>
+      {isProfileDataLoading && <Loader message="Loading..." />}
+      {isUpdatePending && <Loader message="Updating..." />}
     </>
   );
 };

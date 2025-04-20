@@ -33,11 +33,14 @@ const StudyMaterials = () => {
   return (
     <>
       <div className="mt-5 container space-y-6">
-        <p className="h4 font-semibold">Study Materials for CBSE class(6-12)</p>
+        <p className="h4 font-semibold">
+          Study Materials for CBSE Class (6-12)
+        </p>
         <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio minus
-          soluta molestiae saepe, velit impedit nulla porro molestias
-          doloremque. Nulla.
+          Get access to comprehensive, well-structured, and easy-to-understand
+          study materials for CBSE students from Class 6 to 12. Our expertly
+          curated content helps students grasp complex topics with clarity and
+          confidence.
         </p>
         <div className="bg-n-3/10 p-6 space-y-3">
           <p className="h5 font-semibold">
